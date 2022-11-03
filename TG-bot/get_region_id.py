@@ -4,12 +4,18 @@ import requests
 
 
 def get_region(city: str) -> str:
-    url = "https://hotels4.p.rapidapi.com/locations/v3/search"
+    """Функция находит destinationId по названию города
 
-    querystring = {"q": city}
+    :param city: Название города, который надо найти
+    :return: Если удалось найти город, возвращаят его destinationId.
+    Если нет, возвращяет строку 1234
+    """
+    url = "https://hotels4.p.rapidapi.com/locations/v2/search"
+
+    querystring = {"query": city}
 
     headers = {
-        "X-RapidAPI-Key": "10ee6bda01msh92b967849bb4496p12cc57jsn6d564d6b3eb8",
+        "X-RapidAPI-Key": "fa25bc8374mshf68f100cb0a70d1p194921jsn020bfed70507",
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 
@@ -20,5 +26,9 @@ def get_region(city: str) -> str:
         json.dump(todos, file, indent=4)
     with open('get_region_id.json') as json_file:
         data = json.load(json_file)
-        a = data["sr"][0]['gaiaId']
-        return str(a)
+        a = data["suggestions"][0]['entities']
+        if len(a)==0:
+            return '1234'
+        else:
+            a = data["suggestions"][0]['entities']
+            return str(a)
