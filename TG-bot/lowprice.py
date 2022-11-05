@@ -6,8 +6,8 @@ import telebot
 
 from get_region_id import get_region
 from photo_hotel import photo_hotel
-
-bot = telebot.TeleBot('5554118297:AAGarcBl_40FviVp0lmmoKYNFM31Q3VKumw')
+from config import bot_token, API_key
+bot = telebot.TeleBot(bot_token())
 
 
 def lowprice(checkindate: str, checkoutdate: str, day: int, city: str, number_hotel: int, number_photo,
@@ -30,7 +30,7 @@ def lowprice(checkindate: str, checkoutdate: str, day: int, city: str, number_ho
                    "checkOut": checkoutdate, "adults1": "1", "sortOrder": "PRICE", "locale": "en_US", "currency": "USD"}
 
     headers = {
-        "X-RapidAPI-Key": "fa25bc8374mshf68f100cb0a70d1p194921jsn020bfed70507",
+        "X-RapidAPI-Key": API_key(),
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 

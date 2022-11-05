@@ -1,7 +1,7 @@
 import telebot
 
-
-bot = telebot.TeleBot('5554118297:AAGarcBl_40FviVp0lmmoKYNFM31Q3VKumw')
+from config import bot_token
+bot = telebot.TeleBot(bot_token())
 def history(chat_id: int)-> None:
     """Функция выводит дату запросов, историю запросов пользователя и отели, которые бот нашел по этим запросам
 

@@ -2,13 +2,14 @@ import telebot
 from telebot import types
 
 from bestdeal import bestdeal
+from config import bot_token
 from highprice import hightprice
 from history import history
 from lowprice import lowprice
 
-bot = telebot.TeleBot('5554118297:AAGarcBl_40FviVp0lmmoKYNFM31Q3VKumw')
+bot = telebot.TeleBot(bot_token())
 alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-max_hotels = 20
+max_hotels = 10
 max_photo = 20
 
 
@@ -233,7 +234,7 @@ def get_check_in_and_check_out(message, lst, chat_id):
                 else:
                     if int(a0[1]) == 1 or int(a0[1]) == 3 or int(a0[1]) == 5 or int(a0[1]) == 7 or int(
                             a0[1]) == 8 or int(
-                            a0[1]) == 10 or int(a0[1]) == 12:
+                        a0[1]) == 10 or int(a0[1]) == 12:
                         c = 31 - int(a0[2]) + int(a1[2])
                         lst.append(a[0])
                         lst.append(a[1])

@@ -1,7 +1,7 @@
 import json
 
 import requests
-
+from config import API_key
 
 def get_region(city: str) -> str:
     """Функция находит destinationId по названию города
@@ -15,7 +15,7 @@ def get_region(city: str) -> str:
     querystring = {"query": city}
 
     headers = {
-        "X-RapidAPI-Key": "fa25bc8374mshf68f100cb0a70d1p194921jsn020bfed70507",
+        "X-RapidAPI-Key": API_key(),
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 

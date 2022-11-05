@@ -1,5 +1,6 @@
 import json
 import requests
+from config import API_key
 def photo_hotel(hotel_id: str, number)-> list:
     """Функция находит фотографии по Id отеля
 
@@ -12,7 +13,7 @@ def photo_hotel(hotel_id: str, number)-> list:
     querystring = {"id": hotel_id}
 
     headers = {
-        "X-RapidAPI-Key": "fa25bc8374mshf68f100cb0a70d1p194921jsn020bfed70507",
+        "X-RapidAPI-Key": API_key(),
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 
