@@ -87,3 +87,4 @@ def lowprice(checkindate: str, checkoutdate: str, day: int, city: str, number_ho
             '{id}|Дата выполнения запроса: {date}|Команда: /lowprice|Найденные отели: {hotels}\n'.format(
                 id=chat_id, date=datetime.date.today(),
                 hotels=', '.join(lst)))
+

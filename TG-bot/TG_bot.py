@@ -8,7 +8,7 @@ from lowprice import lowprice
 
 bot = telebot.TeleBot('5554118297:AAGarcBl_40FviVp0lmmoKYNFM31Q3VKumw')
 alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-max_hotels = 8
+max_hotels = 20
 max_photo = 20
 
 
@@ -213,42 +213,49 @@ def get_check_in_and_check_out(message, lst, chat_id):
     else:
         a0 = a[0].split('-')
         a1 = a[1].split('-')
-        if len(a0[2]) == 2 and len(a0[1]) == 2 and len(a0[0]) == 4\
+        if len(a0[2]) == 2 and len(a0[1]) == 2 and len(a0[0]) == 4 \
                 and len(a1[2]) == 2 and len(a1[1]) == 2 and len(a1[0]) == 4:
-            if len(a0[0]) != 4 or len(a0[1]) != 2 or len(a0[2]) != 2 or len(a1[0]) != 4 or len(a1[1]) != 2 or len(
-                    a1[1]) != 2:
-                msg = bot.send_message(message.chat.id, "Введите период на который вы хотите поехат в формате"
-                                                        "(YYYY-MM-DD). Если месяц или день "
-                                                        "заканчивается на 1 цифру, то перед ней посавьте 0 Например:\n"
-                                                        "2022-9-1 2022-10-1 Неправильно\n"
-                                                        "2022-09-01 2022-10-1 Правильно")
-                bot.register_next_step_handler(msg, get_check_in_and_check_out, lst, chat_id)
-            c = 0
-            if int(a0[0]) == int(a1[0]) and int(a0[1]) == int(a1[1]):
-                c = int(a1[2]) - int(a0[2])
-                lst.append(a[0])
-                lst.append(a[1])
-                lst.append(c)
-            else:
-                if int(a0[1]) == 1 or int(a0[1]) == 3 or int(a0[1]) == 5 or int(a0[1]) == 7 or int(a0[1]) == 8 or int(
-                        a0[1]) == 10 or int(a0[1]) == 12:
-                    c = 31 - int(a0[2]) + int(a1[2])
-                    lst.append(a[0])
-                    lst.append(a[1])
-                    lst.append(c)
-                elif int(a0[1]) == 4 or int(a0[1]) == 6 or int(a0[1]) == 9 or int(a0[1]) == 11:
-                    c = 30 - int(a0[2]) + int(a1[2])
+            if int(a0[1]) <= 12 or int(a1[1]) <= 12:
+                if len(a0[0]) != 4 or len(a0[1]) != 2 or len(a0[2]) != 2 or len(a1[0]) != 4 or len(a1[1]) != 2 or len(
+                        a1[1]) != 2:
+                    msg = bot.send_message(message.chat.id, "Введите период на который вы хотите поехат в формате"
+                                                            "(YYYY-MM-DD). Если месяц или день "
+                                                            "заканчивается на 1 цифру, то перед ней посавьте 0 Например:\n"
+                                                            "2022-9-1 2022-10-1 Неправильно\n"
+                                                            "2022-09-01 2022-10-1 Правильно")
+                    bot.register_next_step_handler(msg, get_check_in_and_check_out, lst, chat_id)
+                c = 0
+                if int(a0[0]) == int(a1[0]) and int(a0[1]) == int(a1[1]):
+                    c = int(a1[2]) - int(a0[2])
                     lst.append(a[0])
                     lst.append(a[1])
                     lst.append(c)
                 else:
-                    c = 28 - int(a0[2]) + int(a1[2])
-                    lst.append(a[0])
-                    lst.append(a[1])
-                    lst.append(c)
-            msg = bot.send_message(message.chat.id, "Введите город, в который вы хотите поехать на английском языке."
-                                                    " Поиск по России временно недоступен.")
-            bot.register_next_step_handler(msg, get_city, lst, chat_id)
+                    if int(a0[1]) == 1 or int(a0[1]) == 3 or int(a0[1]) == 5 or int(a0[1]) == 7 or int(
+                            a0[1]) == 8 or int(
+                            a0[1]) == 10 or int(a0[1]) == 12:
+                        c = 31 - int(a0[2]) + int(a1[2])
+                        lst.append(a[0])
+                        lst.append(a[1])
+                        lst.append(c)
+                    elif int(a0[1]) == 4 or int(a0[1]) == 6 or int(a0[1]) == 9 or int(a0[1]) == 11:
+                        c = 30 - int(a0[2]) + int(a1[2])
+                        lst.append(a[0])
+                        lst.append(a[1])
+                        lst.append(c)
+                    else:
+                        c = 28 - int(a0[2]) + int(a1[2])
+                        lst.append(a[0])
+                        lst.append(a[1])
+                        lst.append(c)
+                msg = bot.send_message(message.chat.id,
+                                       "Введите город, в который вы хотите поехать на английском языке."
+                                       " Поиск по России временно недоступен.")
+                bot.register_next_step_handler(msg, get_city, lst, chat_id)
+            else:
+                msg = bot.send_message(message.chat.id,
+                                       "Месяцев только 12, введите число, которое больше нуля и меньше или равно 12")
+                bot.register_next_step_handler(msg, get_check_in_and_check_out, lst, chat_id)
         else:
             msg = bot.send_message(message.chat.id, "Месяц и день должны содержать 2 цифры, а год 4 цифры"
                                                     "Если месяц равняется 1, но поставьте перед ним 0. Например:\n"
