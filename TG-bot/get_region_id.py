@@ -30,5 +30,5 @@ def get_region(city: str) -> str:
         if len(a)==0:
             return '1234'
         else:
-            a = data["suggestions"][0]['entities']
+            a = data["suggestions"][0]['entities'][0]['destinationId']
             return str(a)
