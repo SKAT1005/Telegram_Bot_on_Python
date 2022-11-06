@@ -10,7 +10,9 @@ from config import bot_token, API_key
 bot = telebot.TeleBot(bot_token())
 
 
-def hightprice(checkindate: str, checkoutdate: str, day: int, city: str, number_hotel: int, number_photo,
+def hightprice(checkindate: str, checkoutdate: str,
+               day: int, city: str,
+               number_hotel: int, number_photo,
                chat_id: int) -> None:
     """Функция выводящяя Названия, адресса, сайты, расстояния до центра,
     цены за ночь, цены за весь период и фотографии дорогих отелей
@@ -26,15 +28,18 @@ def hightprice(checkindate: str, checkoutdate: str, day: int, city: str, number_
         """
     url = "https://hotels4.p.rapidapi.com/properties/list"
 
-    querystring = {"destinationId": get_region(city), "pageNumber": "1", "pageSize": "200", "checkIn": checkindate,
-                   "checkOut": checkoutdate, "adults1": "1", "sortOrder": "PRICE", "locale": "en_US", "currency": "USD"}
+    querystring = {"destinationId": get_region(city), "pageNumber":
+                   "1", "pageSize": "200", "checkIn": checkindate,
+                   "checkOut": checkoutdate, "adults1": "1",
+                   "sortOrder": "PRICE", "locale": "en_US", "currency": "USD"}
 
     headers = {
         "X-RapidAPI-Key": API_key(),
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
+    response = requests.request(
+        "GET", url, headers=headers, params=querystring)
     todos = json.loads(response.text)
     with open('lowprice.json', 'w') as file:
         json.dump(todos, file, indent=4)
@@ -44,12 +49,14 @@ def hightprice(checkindate: str, checkoutdate: str, day: int, city: str, number_
         lst = []
         try:
             a = data["data"]["body"]["searchResults"]['results']
-        except:
-            bot.send_message(chat_id, "По вашему запросу ничего не удалось найти.")
+        except KeyError:
+            bot.send_message(chat_id, "По вашему запросу"
+                                      "ничего не удалось найти.")
             with open('history.text', 'a', encoding='utf-8') as history:
                 history.write(
                     '{id}|Дата выполнения запроса: {date}|Команда: /lowprice|'
-                    'Найденные отели: К сожалению отелей найдено не было\n'.format(
+                    'Найденные отели: К сожалению отелей'
+                    'найдено не было\n'.format(
                         id=chat_id,
                         date=datetime.date.today()))
         else:
@@ -60,22 +67,36 @@ def hightprice(checkindate: str, checkoutdate: str, day: int, city: str, number_
                 bot.send_message(chat_id, 'Название: {title}'.
                                  format(title=a[-i]['name']))
                 bot.send_message(chat_id,
-                                 'Адресс отеля: {streetAddress}, {locality}, {postalCode}, {region}, {countryName}'
-                                 .format(streetAddress=a[-i]['address']['streetAddress'],
-                                         locality=a[-i]['address']['locality'],
-                                         postalCode=a[-i]['address']['postalCode'],
-                                         region=a[-i]['address']['region'],
-                                         countryName=a[-i]['address']['countryName']))
+                                 'Адресс отеля: {streetAddress},'
+                                 '{locality}, {postalCode},'
+                                 '{region}, {countryName}'
+                                 .format(streetAddress=a[-i]
+                                         ['address']['streetAddress'],
+                                         locality=a[-i]
+                                         ['address']['locality'],
+                                         postalCode=a[-i]
+                                         ['address']['postalCode'],
+                                         region=a[-i]
+                                         ['address']['region'],
+                                         countryName=a[-i]
+                                         ['address']['countryName']))
                 bot.send_message(chat_id,
                                  'Сайт отеля: {site}'.format(
-                                     site='https://www.hotels.com/ho' + str(a[-i]['id']) + '/'))
-                bot.send_message(chat_id, 'Расстояние до центра: {distance}'.format(
-                    distance=a[-i]['landmarks'][0]['distance']))
+                                     site='https://www.hotels.com/ho'
+                                          + str(a[-i]['id']) + '/'))
+                bot.send_message(chat_id, 'Расстояние до центра: '
+                                          '{distance}'
+                                 .format(
+                                       distance=a[-i]
+                                       ['landmarks'][0]['distance']))
                 bot.send_message(chat_id, 'Цена за ночь: {cost}$'.format(
-                    cost=a[-i]['ratePlan']['price']['exactCurrent']))
+                    cost=a[-i]
+                    ['ratePlan']['price']['exactCurrent']))
                 bot.send_message(chat_id,
                                  'Цена все время: {totalcost}$'.format(
-                                     totalcost=a[-i]['ratePlan']['price']['exactCurrent'] * day))
+                                     totalcost=a[-i]
+                                     ['ratePlan']['price']
+                                     ['exactCurrent'] * day))
                 if number_photo != 'Нет':
                     photo = photo_hotel(str(a[-i]['id']), number_photo)
                     for p in photo:
@@ -84,7 +105,8 @@ def hightprice(checkindate: str, checkoutdate: str, day: int, city: str, number_
                     pass
     with open('history.text', 'a', encoding='utf-8') as history:
         history.write(
-            '{id}|Дата выполнения запроса: {date}|Команда: /hightprice|Найденные отели: {hotels}\n'.format(
+            '{id}|Дата выполнения запроса: {date}|Команда:'
+            '/hightprice|Найденные отели: {hotels}\n'.format(
                 id=chat_id,
                 date=datetime.date.today(),
                 hotels=", ".join(lst)))

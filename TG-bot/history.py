@@ -1,20 +1,24 @@
 import telebot
 
 from config import bot_token
+
 bot = telebot.TeleBot(bot_token())
-def history(chat_id: int)-> None:
-    """Функция выводит дату запросов, историю запросов пользователя и отели, которые бот нашел по этим запросам
+
+
+def history(chat_id: int) -> None:
+    """Функция выводит дату запросов, историю
+    запросов пользователя и отели, которые бот нашел по этим запросам
 
     :param chat_id: Id чата с пользователем
     :return: None
     """
-    b=0
+    b = 0
     with open('history.text', encoding='utf-8') as history:
         for i in history:
-            a=i.split('|')
-            if int(a[0])==chat_id:
+            a = i.split('|')
+            if int(a[0]) == chat_id:
                 a.remove(a[0])
-                bot.send_message(chat_id,'\n'.join(a))
-                b+=1
-        if b==0:
+                bot.send_message(chat_id, '\n'.join(a))
+                b += 1
+        if b == 0:
             bot.send_message(chat_id, 'К сожалению вы еще не делали запросов.')

@@ -1,7 +1,11 @@
 import json
+
 import requests
+
 from config import API_key
-def photo_hotel(hotel_id: str, number)-> list:
+
+
+def photo_hotel(hotel_id: str, number) -> list:
     """Функция находит фотографии по Id отеля
 
     :param hotel_id: Id отеля
@@ -17,7 +21,8 @@ def photo_hotel(hotel_id: str, number)-> list:
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 
-    response = requests.request("GET", url, headers=headers, params=querystring, timeout=10)
+    response = requests.request(
+        "GET", url, headers=headers, params=querystring, timeout=10)
 
     todos = json.loads(response.text)
     with open('get_photo_hotel.json', 'w') as file:
@@ -26,9 +31,9 @@ def photo_hotel(hotel_id: str, number)-> list:
     with open('get_photo_hotel.json') as json_file:
         data = json.load(json_file)
 
-        lst=[]
+        lst = []
         for i in range(number):
-            a=data['hotelImages'][i]['baseUrl']
-            a=a.replace('{size}', 'w')
+            a = data['hotelImages'][i]['baseUrl']
+            a = a.replace('{size}', 'w')
             lst.append(a)
     return lst

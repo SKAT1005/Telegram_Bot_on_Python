@@ -1,7 +1,9 @@
 import json
 
 import requests
+
 from config import API_key
+
 
 def get_region(city: str) -> str:
     """Функция находит destinationId по названию города
@@ -19,7 +21,8 @@ def get_region(city: str) -> str:
         "X-RapidAPI-Host": "hotels4.p.rapidapi.com"
     }
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
+    response = requests.request(
+        "GET", url, headers=headers, params=querystring)
 
     todos = json.loads(response.text)
     with open('get_region_id.json', 'w') as file:
@@ -27,7 +30,7 @@ def get_region(city: str) -> str:
     with open('get_region_id.json') as json_file:
         data = json.load(json_file)
         a = data["suggestions"][0]['entities']
-        if len(a)==0:
+        if len(a) == 0:
             return '1234'
         else:
             a = data["suggestions"][0]['entities'][0]['destinationId']
